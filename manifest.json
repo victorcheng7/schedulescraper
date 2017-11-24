@@ -10,16 +10,11 @@
     "content_scripts": [{
            "matches": ["https://my.sa.ucsb.edu/public/curriculum/coursesearch.aspx"],
            "js": ["js/app.js"],
-           //"css": ["css/transcript.css"],
            "run_at": "document_end"
        }
    ],
    "web_accessible_resources": [
     "js/app.js"
-    //"css/transcript.css",
-    //"images/search.svg",
-    //"images/loading.svg",
-    //""
   ],
     "permissions": [
         "https://my.sa.ucsb.edu/public/curriculum/coursesearch.aspx*"
