@@ -1,0 +1,27 @@
+{
+    "name": "Scheduler Scraper",
+    "version": "0.0",
+    "manifest_version": 2,
+    "description": "Scraping UCSB courses",
+    "background": {
+      "persistent": false,
+      "scripts": ["js/background.js"]
+   },
+    "content_scripts": [{
+           "matches": ["https://my.sa.ucsb.edu/public/curriculum/coursesearch.aspx"],
+           "js": ["js/app.js"],
+           //"css": ["css/transcript.css"],
+           "run_at": "document_end"
+       }
+   ],
+   "web_accessible_resources": [
+    "js/app.js"
+    //"css/transcript.css",
+    //"images/search.svg",
+    //"images/loading.svg",
+    //""
+  ],
+    "permissions": [
+        "https://my.sa.ucsb.edu/public/curriculum/coursesearch.aspx*"
+    ]
+}
