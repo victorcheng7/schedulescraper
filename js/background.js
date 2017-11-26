@@ -1,6 +1,5 @@
 //Global variables for you to define
-//var subjects = 92;
-var subjects = 2;
+var subjects = 92;
 var quarter = 1;
 var courseLevel = 2;
 
