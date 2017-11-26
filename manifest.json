@@ -18,6 +18,7 @@
   ],
     "permissions": [
         "tabs",
-        "https://my.sa.ucsb.edu/public/curriculum/coursesearch.aspx*"
+        "https://my.sa.ucsb.edu/public/curriculum/coursesearch.aspx*",
+        "http://localhost:5000/"
     ]
 }

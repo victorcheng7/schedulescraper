@@ -7,9 +7,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   var quarter = request["quarter"];
   var courseLevel = request["courseLevel"];
   var subject = request["subject"];
+  console.log(quarter, " ", courseLevel, " ", subject);
   if(request["scrape"]) {
     sendResponse({"data" : getData(e_subjectArea[subject].innerText, e_quarter[quarter].innerText, e_courseLevel[courseLevel].innerText)});
-    console.log(quarter, " ", courseLevel, " ", subject);
     window.location.reload();
   }
   else {
