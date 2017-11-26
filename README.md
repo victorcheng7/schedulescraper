@@ -1,4 +1,4 @@
-# schedulescraper
+# Schedulescraper
 
 Chrome Extension to scrape UCSB Course data.
 
