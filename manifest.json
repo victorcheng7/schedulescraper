@@ -4,7 +4,7 @@
     "manifest_version": 2,
     "description": "Scraping UCSB courses",
     "background": {
-      "persistent": false,
+      "persistent": true,
       "scripts": ["js/background.js"]
    },
     "content_scripts": [{
@@ -17,6 +17,7 @@
     "js/app.js"
   ],
     "permissions": [
+        "tabs",
         "https://my.sa.ucsb.edu/public/curriculum/coursesearch.aspx*"
     ]
 }

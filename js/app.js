@@ -3,37 +3,23 @@ var e_quarter = document.getElementById('ctl00_pageContent_quarterList');
 var e_courseLevel = document.getElementById('ctl00_pageContent_dropDownCourseLevels');
 var e_searchButton = document.getElementById('ctl00_pageContent_searchButton');
 
-/*
-var quarter = selectQuarter(0);
-var courseLevel = selectCourseLevel(0);
-var subject = selectSubjectArea(0);
-console.log(getData(subject, quarter, courseLevel));*/
-
-main();
-function main(){
-  var totalCourses = [];
-
-  var quarter = selectQuarter(0);
-  var courseLevel = selectCourseLevel(0);
-  for(var i = 0; i < 2; i++){
-    var subject = selectSubjectArea(i);
-    clickSearch();
-    totalCourses.concat(getData(subject, quarter, courseLevel));
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  var quarter = request["quarter"];
+  var courseLevel = request["courseLevel"];
+  var subject = request["subject"];
+  if(request["scrape"]) {
+    sendResponse({"data" : getData(e_subjectArea[subject].innerText, e_quarter[quarter].innerText, e_courseLevel[courseLevel].innerText)});
+    console.log(quarter, " ", courseLevel, " ", subject);
+    window.location.reload();
   }
-  /*
-  for(var i = 0; i < e_subjectArea.length; i++){
-    var subject = selectSubjectArea(i);
-    for(var j = 0; j < e_quarter.length; j++){
-      var quarter = selectQuarter(j);
-      for(var k = 0; k < e_courseLevel.length; k++){
-        var courseLevel = selectCourseLevel(k);
-        clickSearch();
-        totalCourses.concat(getData(subject, quarter, courseLevel));
-      }
-    }
-  }*/
-  console.log(totalCourses); //TODO make this less elements
-}
+  else {
+    selectQuarter(quarter);
+    selectCourseLevel(courseLevel);
+    selectSubjectArea(subject);
+    clickSearch();
+    sendResponse({"quarter": quarter, "courseLevel": courseLevel, "subject" : subject});
+  }
+});
 
 function pause(milliseconds) {
 	var dt = new Date();
@@ -41,7 +27,9 @@ function pause(milliseconds) {
 }
 
 function getData(subject, quarter, courseLevel){
-  var coursesHTML = document.getElementsByClassName('gridview')[0].children[1].children;
+  var gridView = document.getElementsByClassName('gridview')[0].children[1];
+  if(gridView == undefined) return [];
+  var coursesHTML = gridView.children;
   var coursesArray = [];
 
   for(var i = 0; i < coursesHTML.length; i++){
@@ -79,7 +67,7 @@ function getData(subject, quarter, courseLevel){
     coursesArray.push(course);
     pause(91);
   }
-
+  console.log(coursesArray);
   return coursesArray;
 }
 
