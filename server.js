@@ -4,7 +4,6 @@ var express = require('express');
 var fs = require('fs');
 var Fuse = require('fuse.js');
 
-
 var app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -58,11 +57,15 @@ app.get("/search", (req, res) => {
       };
       var fuse = new Fuse(a, options); // "list" is the item array
       var result = fuse.search(toSearch.q);
-      console.log(result);
+
+      var exactResult = [];
+      for(var i in a){
+        if(a[i].Description.indexOf(toSearch) != -1) exactResult.push(a[i]);
+      }
       var filteredResult = result.filter((e) => {
         return e.score <= 0.2;
-      })
-      res.send(filteredResult);
+      });
+      res.send(filteredResult.concat(exactResult));
     });
 });
 
