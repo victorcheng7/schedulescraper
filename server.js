@@ -69,5 +69,14 @@ app.get("/search", (req, res) => {
     });
 });
 
+app.get("/getAll", (req, res) => {
+    fs.readFile('./winter2018.txt', 'utf8', function (err,data) {
+      if (err) {
+        return console.log(err);
+      }
+      res.send(JSON.parse(data));
+    });
+});
+
 
 app.listen(process.env.PORT || 5000, () => console.log("Server started"));
