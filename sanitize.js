@@ -60,7 +60,6 @@ function createSuggestionList(){
   });
 }
 
-
 function clean(a){
   a[i].Subject = a[i].Subject.split("-")[0].trim();
   a[i].Quarter = a[i].Quarter.trim();

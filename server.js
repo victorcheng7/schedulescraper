@@ -16,14 +16,19 @@ app.get("/search", (req, res) => {
 		res.header('Access-Control-Allow-Methods', 'POST');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Authorization, Accept");
     */
-    fs.readFile('./output.txt', 'utf8', function (err,data) {
-      if (err) {
-        return console.log(err);
-      }
-      var a = JSON.parse(data);
-      var toSearch = req.query;
-      console.log("Searching for", toSearch.q);
-      //TODO find max length of
+    var toSearch = req.query.q;
+    console.log("Searching for", toSearch);
+
+    let data = function(filename){
+      return new Promise(function(resolve, reject) {
+        fs.readFile(filename, 'utf8', (err, data) => {
+          if(err) reject(err);
+          resolve(JSON.parse(data));
+        })
+      })
+    }
+
+    function looseSearch(toSearch, a){
       var options = {
         shouldSort: true,
         tokenize: true,
@@ -32,7 +37,7 @@ app.get("/search", (req, res) => {
         threshold: 0.2,
         location: 0,
         distance: 100,
-        maxPatternLength: toSearch.q.length,
+        maxPatternLength: toSearch.length,
         minMatchCharLength: 1,
         keys: [
           "Subject",
@@ -56,7 +61,7 @@ app.get("/search", (req, res) => {
         ]
       };
       var fuse = new Fuse(a, options); // "list" is the item array
-      var result = fuse.search(toSearch.q);
+      var result = fuse.search(toSearch);
 
       var exactResult = [];
       for(var i in a){
@@ -65,7 +70,20 @@ app.get("/search", (req, res) => {
       var filteredResult = result.filter((e) => {
         return e.score <= 0.2;
       });
-      res.send(filteredResult.concat(exactResult));
+
+      console.log(filteredResult.concat(exactResult));
+      return filteredResult.concat(exactResult);
+    }
+
+    function exactSearch(toSearch, a){
+
+    }
+
+    data('./output.txt').then(a => {
+      var looseSearchResult = looseSearch(toSearch, a);
+      var exactSearchResult = exactSearch(toSearch, a);
+
+      res.send(looseSearchResult);
     });
 });
 
