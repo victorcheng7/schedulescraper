@@ -2,13 +2,13 @@ var fs = require('fs');
 var nlp = require('compromise');
 
 function sanitize(){
-  fs.readFile('./output.txt', 'utf8', function (err,data) {
+  fs.readFile('./winter2018.txt', 'utf8', function (err,data) {
     if (err) {
       return console.log(err);
     }
     var a = JSON.parse(data);
     console.log(a[0]);
-/*
+
     for(var i in a){
       a[i].Days = dayToArray(a[i].Days);
       a[i].Quarter = a[i].Quarter.trim();
@@ -20,7 +20,17 @@ function sanitize(){
     fs.writeFile("./output.txt", JSON.stringify(a), function(err){
       if(err) return console.log(err);
       console.log("Filed saved!");
-    });*/
+    });
+  });
+}
+
+function printFirstOutput(){
+  fs.readFile('./output.txt', 'utf8', function (err,data) {
+    if (err) {
+      return console.log(err);
+    }
+    var a = JSON.parse(data);
+    console.log(a[0]);
   });
 }
 
@@ -31,12 +41,22 @@ function createSuggestionList(){
     }
     var a = JSON.parse(data);
 
-    fo
-    /*
-    fs.writeFile("./suggestionList.txt", JSON.stringify(a), function(err){
+    var result = new Set();
+    for(var i in a){
+      Object.keys(a[i]).forEach(function(key) {
+          var temp = a[i][key].split(' ');
+          for(var word in temp){
+            if(temp[word].length <= 1) continue;
+            result.add(temp[word]);
+          }
+      });
+    }
+    var arrayResult = Array.from(result);
+
+    fs.writeFile("./suggestionList.txt", JSON.stringify(arrayResult), function(err){
       if(err) return console.log(err);
       console.log("Filed saved!");
-    });*/
+    });
   });
 }
 
@@ -61,10 +81,6 @@ function clean(a){
   a[i].Subject = a[i].Subject.split("-")[0].trim();
 }
 
-function timeToArray(string){
-
-}
-
 function dayToArray(string){
   var a = string.split(" ");
   var result = "";
@@ -75,16 +91,16 @@ function dayToArray(string){
         result += ("Monday");
         break;
       case "T":
-        result+=(",Tuesday");
+        result+=(", Tuesday");
         break;
       case "W":
-        result+=(",Wednesday");
+        result+=(", Wednesday");
         break;
       case "R":
-        result+=(",Thursday");
+        result+=(", Thursday");
         break;
       case "F":
-        result+=(",Friday");
+        result+=(", Friday");
         break;
       default: result += "";
     }
