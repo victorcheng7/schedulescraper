@@ -16,7 +16,7 @@ app.get("/search", (req, res) => {
 		res.header('Access-Control-Allow-Methods', 'POST');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Authorization, Accept");
     */
-    fs.readFile('./winter2018.txt', 'utf8', function (err,data) {
+    fs.readFile('./output.txt', 'utf8', function (err,data) {
       if (err) {
         return console.log(err);
       }
