@@ -23,7 +23,7 @@ function sanitize(){
     });
   });
 }
-
+printFirstOutput();
 function printFirstOutput(){
   fs.readFile('./output.txt', 'utf8', function (err,data) {
     if (err) {

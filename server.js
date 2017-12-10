@@ -17,6 +17,7 @@ app.get("/search", (req, res) => {
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Authorization, Accept");
     */
     var toSearch = req.query.q;
+    toSearch = toSearch.toLowerCase();
     console.log("Searching for", toSearch);
 
     let data = function(filename){
@@ -71,19 +72,28 @@ app.get("/search", (req, res) => {
         return e.score <= 0.2;
       });
 
-      console.log(filteredResult.concat(exactResult));
       return filteredResult.concat(exactResult);
     }
 
     function exactSearch(toSearch, a){
-
+      var result = [];
+      for(var i in a){
+        Object.keys(a[i]).forEach(function(key){
+          var text = a[i][key].toLowerCase();
+          if(text.indexOf(toSearch) >= 0) {
+            result.push(a[i]);
+            return;
+          }
+        });
+      }
+      return result;
     }
 
     data('./output.txt').then(a => {
       var looseSearchResult = looseSearch(toSearch, a);
       var exactSearchResult = exactSearch(toSearch, a);
 
-      res.send(looseSearchResult);
+      res.send(exactSearchResult);
     });
 });
 
