@@ -78,5 +78,14 @@ app.get("/getAll", (req, res) => {
     });
 });
 
+app.get("/getSuggestionList", (req, res) => {
+    fs.readFile('./suggestionList.txt', 'utf8', function (err,data) {
+      if (err) {
+        return console.log(err);
+      }
+      res.send(JSON.parse(data));
+    });
+});
+
 
 app.listen(process.env.PORT || 5000, () => console.log("Server started"));
